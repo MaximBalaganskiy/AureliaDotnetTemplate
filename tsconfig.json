@@ -7,9 +7,9 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "skipDefaultLibCheck": true,
-    "strict": true,
+    "strict": false,
     "lib": [ "es2015", "dom" ],
-    "types": [ "webpack-env" ]
+    "types": [ ]
   },
   "exclude": [ "bin", "node_modules" ],
   "atom": { "rewriteTsconfig": false }

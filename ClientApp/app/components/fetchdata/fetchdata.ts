@@ -1,22 +1,20 @@
-import { HttpClient } from 'aurelia-fetch-client';
-import { inject } from 'aurelia-framework';
+import { HttpClient } from "aurelia-fetch-client";
+import { inject } from "aurelia-framework";
 
 @inject(HttpClient)
 export class Fetchdata {
-    public forecasts: WeatherForecast[];
+	constructor(private http: HttpClient) { }
 
-    constructor(http: HttpClient) {
-        http.fetch('api/SampleData/WeatherForecasts')
-            .then(result => result.json() as Promise<WeatherForecast[]>)
-            .then(data => {
-                this.forecasts = data;
-            });
-    }
+	public forecasts: WeatherForecast[];
+
+	async activate() {
+		this.forecasts = await this.http.fetch("api/SampleData/WeatherForecasts").then(result => result.json() as Promise<WeatherForecast[]>);
+	}
 }
 
 interface WeatherForecast {
-    dateFormatted: string;
-    temperatureC: number;
-    temperatureF: number;
-    summary: string;
+	dateFormatted: string;
+	temperatureC: number;
+	temperatureF: number;
+	summary: string;
 }
