@@ -8,9 +8,9 @@
 		<div class="navbar-collapse collapse" id="navbarNav">
 			<ul class="navbar-nav">
 				<li repeat.for="row of router.navigation" class="nav-item ${row.isActive ? 'active' : ''}">
-					<a href.bind="row.href" class="nav-link">
-						<span class="glyphicon glyphicon-${row.settings.icon}"></span> ${row.title}
-					</a>
+                    <a href.bind="row.href" class="nav-link">
+                        <i class="${row.settings.icon}"></i> ${row.title}
+                    </a>
 				</li>
 			</ul>
 		</div>
