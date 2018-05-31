@@ -23,7 +23,7 @@ module.exports = (env, argv) => {
 		},
 		output: {
 			path: path.resolve(bundleOutputDir),
-			publicPath: "dist/",
+			publicPath: "/dist/",
 			filename: "[name].js",
 			chunkFilename: "[name].js"
 		},
