@@ -5,14 +5,14 @@ import { inject } from "aurelia-framework";
 export class Fetchdata {
 	constructor(private http: HttpClient) { }
 
-	public forecasts: WeatherForecast[];
+	forecasts: IWeatherForecast[];
 
 	async activate() {
-		this.forecasts = await this.http.fetch("api/SampleData/WeatherForecasts").then(result => result.json() as Promise<WeatherForecast[]>);
+		this.forecasts = await this.http.fetch("api/SampleData/WeatherForecasts").then(result => result.json() as Promise<IWeatherForecast[]>);
 	}
 }
 
-interface WeatherForecast {
+interface IWeatherForecast {
 	dateFormatted: string;
 	temperatureC: number;
 	temperatureF: number;

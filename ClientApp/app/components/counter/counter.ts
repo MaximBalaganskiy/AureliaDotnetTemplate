@@ -1,7 +1,7 @@
 export class Counter {
-    public currentCount = 0;
+	currentCount = 0;
 
-    public incrementCounter() {
-        this.currentCount++;
-    }
+	incrementCounter() {
+		this.currentCount++;
+	}
 }
