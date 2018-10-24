@@ -2,6 +2,8 @@ const path = require("path");
 const webpack = require("webpack");
 const { AureliaPlugin, ModuleDependenciesPlugin, GlobDependenciesPlugin } = require("aurelia-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+
 
 const extractCSS = new ExtractTextPlugin("vendor.css");
 const bundleOutputDir = "./wwwroot/dist";
@@ -42,13 +44,23 @@ module.exports = (env, argv) => {
 		},
 		optimization: {
 			splitChunks: {
+				chunks: "all",
+				// uncomment the following to create a separate bundle for each npm module
+				/* maxInitialRequests: Infinity,
+				minSize: 0,
 				cacheGroups: {
-					commons: {
+					vendor: {
 						test: /[\\/]node_modules[\\/]/,
-						name: "vendor",
-						chunks: "all"
+						name(module) {
+							// get the name. E.g. node_modules/packageName/not/this/part.js
+							// or node_modules/packageName
+							const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+
+							// npm package names are URL-safe, but some servers don't like @ symbols
+							return `npm.${packageName.replace('@', '')}`;
+						}
 					}
-				}
+				}*/
 			}
 		},
 		devtool: isDevBuild ? "source-map" : false,
@@ -58,6 +70,7 @@ module.exports = (env, argv) => {
 		plugins: [
 			new webpack.DefinePlugin({ IS_DEV_BUILD: JSON.stringify(isDevBuild) }),
 			new webpack.ProvidePlugin({ $: "jquery", jQuery: "jquery", "window.jQuery": "jquery" }),
+			new HtmlWebpackPlugin({ template: 'Views/Shared/_LayoutTemplate.cshtml', filename: "../../Views/Shared/_Layout.cshtml", inject: false, metadata: {}, alwaysWriteToDisk: true }),
 			new AureliaPlugin({ aureliaApp: "boot" }),
 			new GlobDependenciesPlugin({ "boot": ["ClientApp/**/*.{ts,html}"] }),
 			new ModuleDependenciesPlugin({}),
