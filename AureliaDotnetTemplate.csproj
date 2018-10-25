@@ -28,8 +28,23 @@
 		<Exec Command="npm run webpack:dev" />
 	</Target>
 
-	<Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
-		<!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+	<Target Name="PublishRunWebpackDebug" AfterTargets="ComputeFilesToPublish" Condition=" '$(Configuration)' == 'Debug'">
+		<!-- As part of publishing, ensure the JS resources are freshly built in DEVELOPMENT mode for Debug builds -->
+		<Exec Command="npm install" />
+		<Exec Command="npm run webpack:dev" />
+
+		<!-- Include the newly-built files in the publish output -->
+		<ItemGroup>
+			<DistFiles Include="wwwroot\dist\**" />
+			<ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+				<RelativePath>%(DistFiles.Identity)</RelativePath>
+				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+			</ResolvedFileToPublish>
+		</ItemGroup>
+	</Target>
+
+	<Target Name="PublishRunWebpackRelease" AfterTargets="ComputeFilesToPublish" Condition=" '$(Configuration)' == 'Release'">
+		<!-- As part of publishing, ensure the JS resources are freshly built in production mode for release builds -->
 		<Exec Command="npm install" />
 		<Exec Command="npm run webpack:prod" />
 
