@@ -1,11 +1,11 @@
 const path = require("path");
 const webpack = require("webpack");
 const { AureliaPlugin, ModuleDependenciesPlugin, GlobDependenciesPlugin } = require("aurelia-webpack-plugin");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-
-const extractCSS = new ExtractTextPlugin("vendor.css");
 const bundleOutputDir = "./wwwroot/dist";
 
 module.exports = (env, argv) => {
@@ -35,7 +35,7 @@ module.exports = (env, argv) => {
 				{ test: /\.(png|eot|ttf|svg)(\?|$)/, loader: "url-loader?limit=100000" },
 				{ test: /\.ts$/i, include: [/ClientApp/, /node_modules/], use: "awesome-typescript-loader" },
 				{ test: /\.html$/i, use: "html-loader" },
-				{ test: /\.css(\?|$)/, include: [/node_modules/], loader: extractCSS.extract([isDevBuild ? 'css-loader' : 'css-loader?minimize']) },
+				{ test: /\.css(\?|$)/, include: [/node_modules/], use: [{ loader: MiniCssExtractPlugin.loader }, cssLoader] },
 				{ test: /\.css$/i, exclude: [/node_modules/], issuer: /\.html$/i, use: cssLoader },
 				{ test: /\.css$/i, exclude: [/node_modules/], issuer: [{ not: [{ test: /\.html$/i }] }], use: ["style-loader", cssLoader] },
 				{ test: /\.scss$/i, issuer: /(\.html|empty-entry\.js)$/i, use: [cssLoader, "sass-loader"] },
@@ -61,7 +61,15 @@ module.exports = (env, argv) => {
 						}
 					}
 				}*/
-			}
+			},
+			minimizer: [
+				new UglifyJsPlugin({
+					cache: true,
+					parallel: true,
+					sourceMap: true // set to true if you want JS source maps
+				}),
+				new OptimizeCSSAssetsPlugin({})
+			]
 		},
 		devtool: isDevBuild ? "source-map" : false,
 		performance: {
@@ -74,7 +82,7 @@ module.exports = (env, argv) => {
 			new AureliaPlugin({ aureliaApp: "boot" }),
 			new GlobDependenciesPlugin({ "boot": ["ClientApp/**/*.{ts,html}"] }),
 			new ModuleDependenciesPlugin({}),
-			extractCSS
+			new MiniCssExtractPlugin()
 		]
 	}];
 };
