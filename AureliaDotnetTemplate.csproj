@@ -2,6 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>netcoreapp3.0</TargetFramework>
+		<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+		<TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
 	</PropertyGroup>
 
 
