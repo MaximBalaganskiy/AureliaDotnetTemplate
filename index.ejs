@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+	<title></title>
+
+	<% for (var css in htmlWebpackPlugin.files.css) { %>
+	<link href="<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
+	<% } %>
+</head>
+<body>
+	<div aurelia-app="boot" class="app">
+		<h5>Loading</h5>
+	</div>
+
+	<% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+	<script src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script> <% } %>
+</body>
+</html>

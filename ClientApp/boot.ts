@@ -13,10 +13,10 @@ export function configure(aurelia: Aurelia) {
 		aurelia.use.developmentLogging();
 	}
 
-	new HttpClient().configure(config => {
-		const baseUrl = document.getElementsByTagName("base")[0].href;
-		config.withBaseUrl(baseUrl);
-	});
+	//new HttpClient().configure(config => {
+	//	const baseUrl = document.getElementsByTagName("base")[0].href;
+	//	config.withBaseUrl(baseUrl);
+	//});
 
 	aurelia.start().then(() => aurelia.setRoot("app/components/app/app"));
 }
