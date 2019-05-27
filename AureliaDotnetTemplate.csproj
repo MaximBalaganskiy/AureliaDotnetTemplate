@@ -23,7 +23,7 @@
 		<Message Importance="high" Text="Performing first-run Webpack build..." />
 		<Exec Command="npm install" />
 		<Exec Command="npm ddp" />
-		<Exec Command="npm run webpack:dev" />
+		<Exec Command="npm run webpack:Debug" />
 	</Target>
 
 	<Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
